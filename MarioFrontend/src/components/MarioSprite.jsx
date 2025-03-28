@@ -1,9 +1,9 @@
 import { useRef, useState, useEffect } from 'react'
 import { useFrame } from '@react-three/fiber'
 
-export default function MarioSprite() {
+export default function MarioSprite({ onPositionChange }) {
   const groupRef = useRef()
-  const [direction, setDirection] = useState(1)
+  const [direction, setDirection] = useState(0)
   const [position, setPosition] = useState([-2, 0, 0])
   const [isJumping, setIsJumping] = useState(false)
   const [jumpVelocity, setJumpVelocity] = useState(0)
@@ -24,13 +24,36 @@ export default function MarioSprite() {
         setIsJumping(true)
         setJumpVelocity(JUMP_FORCE)
       }
-      if (e.code === 'KeyL') {
-        setDirection(0); // Stop horizontal movement
-        setTargetRotation(0); // Rotate to face the viewer
+      if (e.code === 'ArrowRight') {
+        setDirection(1)
+        setTargetRotation(Math.PI / 2)
+      }
+      if (e.code === 'ArrowLeft') {
+        setDirection(-1)
+        setTargetRotation(-Math.PI / 2)
+      }
+      if (e.code === 'ArrowUp') {
+        setDirection(2)
+        setTargetRotation(Math.PI)
+      }
+      if (e.code === 'ArrowDown') {
+        setDirection(-2)
+        setTargetRotation(0)
       }
     }
+
+    const handleKeyUp = (e) => {
+      if (['ArrowRight', 'ArrowLeft', 'ArrowUp', 'ArrowDown'].includes(e.code)) {
+        setDirection(0)
+      }
+    }
+
     window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
+    window.addEventListener('keyup', handleKeyUp)
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+      window.removeEventListener('keyup', handleKeyUp)
+    }
   }, [isJumping])
 
   useFrame((state, delta) => {
@@ -38,22 +61,14 @@ export default function MarioSprite() {
 
     let newX = position[0];
     let newY = position[1];
+    let newZ = position[2];
     let newVelocity = jumpVelocity;
 
-    // Update horizontal position
-    newX += delta * direction * MOVEMENT_SPEED;
-
-    // Change direction at boundaries
-    if (newX > 2) {
-      setDirection(-1);
-      setTargetRotation(-Math.PI/2);
-      newX = 2;
-    }
-    if (newX < -2) {
-      setDirection(1);
-      setTargetRotation(Math.PI/2);
-      newX = -2;
-    }
+    // Update position based on direction
+    if (direction === 1) newX += delta * MOVEMENT_SPEED;
+    if (direction === -1) newX -= delta * MOVEMENT_SPEED;
+    if (direction === 2) newZ -= delta * MOVEMENT_SPEED;
+    if (direction === -2) newZ += delta * MOVEMENT_SPEED;
 
     // Smooth rotation
     currentRotation.current += (targetRotation - currentRotation.current) * delta * 10;
@@ -73,20 +88,25 @@ export default function MarioSprite() {
     }
 
     // Update position
-    setPosition([newX, newY, position[2]]);
+    setPosition([newX, newY, newZ]);
     setJumpVelocity(newVelocity);
-
-    // Animate legs and arms
-    if (!isJumping) {
-      setLegRotation(Math.sin(state.clock.elapsedTime * 10) * 0.4)
-      setArmRotation(Math.sin(state.clock.elapsedTime * 10) * 0.5)
-    } else {
-      setLegRotation(-0.2)
-      setArmRotation(-0.5)
-    }
     
+    // Send position to parent for collision detection
+    if (onPositionChange) {
+      onPositionChange([newX, newY, newZ]);
+    }
+
+    // Animate legs and arms only when moving
+    if (!isJumping && direction !== 0) {
+      setLegRotation(Math.sin(state.clock.elapsedTime * 10) * 0.4);
+      setArmRotation(Math.sin(state.clock.elapsedTime * 10) * 0.5);
+    } else {
+      setLegRotation(0);
+      setArmRotation(0);
+    }
+
     // Update position
-    groupRef.current.position.set(newX, newY, position[2])
+    groupRef.current.position.set(newX, newY, newZ);
   })
 
   return (

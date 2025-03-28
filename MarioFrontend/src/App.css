@@ -1,7 +1,7 @@
 #root {
   margin: 0 auto;
   text-align: center;
-}
+} 
 
 .logo {
   height: 6em;
@@ -102,4 +102,38 @@ html, body {
   width: 100%;
   height: 100%;
   overflow: hidden;
+}
+
+/* Add at the end of your existing CSS */
+.success-message {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 2rem;
+  border-radius: 10px;
+  text-align: center;
+  z-index: 100;
+  font-family: 'Press Start 2P', system-ui, -apple-system, sans-serif;
+}
+
+.success-message h2 {
+  color: #E60012;
+  margin-bottom: 1rem;
+}
+
+.success-message button {
+  margin-top: 1rem;
+  background-color: #E60012;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.success-message button:hover {
+  background-color: #FF3030;
 }
