@@ -241,4 +241,4 @@ export default function MarioSprite({ onPositionChange }) {
       </mesh>
     </group>
   )
-} 
+}
