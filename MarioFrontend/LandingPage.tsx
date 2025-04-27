@@ -5,7 +5,10 @@ import { Link } from 'react-router-dom';
 
 const Container = styled.div`
   min-height: 100vh;
-  background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: #000;
   color: #ffffff;
   width: 100vw;
   overflow-x: hidden;
@@ -57,12 +60,13 @@ const NavLink = styled(Link)`
 `;
 
 const Hero = styled.section`
-  min-height: 100vh;
+  min-height: 65vh;
+  max-height: 70vh;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 8rem 2rem 2rem;
+  padding: 6rem 2rem 2rem;
   background: url('https://i.imgur.com/your-mario-background.png') center/cover;
   position: relative;
   width: 100vw;
@@ -202,13 +206,27 @@ const FeatureDescription = styled.p`
   line-height: 1.6;
 `;
 
+const Footer = styled.footer`
+  background: rgba(0, 0, 0, 0.9);
+  color: #ffffff;
+  text-align: center;
+  padding: 1rem 0;
+  position: relative;
+  width: 100%;
+  bottom: 0;
+
+  @media (max-width: 768px) {
+    padding: 0.5rem 0;
+  }
+`;
+
 const LandingPage: React.FC = () => {
   return (
     <Container>
       <Navbar>
         <Logo>Super Pause Bros</Logo>
         <div>
-          <NavLink to="/game">Play Game</NavLink>
+          <NavLink to="/">Play Game</NavLink>
         </div>
       </Navbar>
 
@@ -286,6 +304,10 @@ const LandingPage: React.FC = () => {
           </FeatureCard>
         </FeatureGrid>
       </Features>
+
+      <Footer>
+        <p>&copy; {new Date().getFullYear()} Super Pause Bros. All rights reserved.</p>
+      </Footer>
     </Container>
   );
 };

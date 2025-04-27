@@ -5,8 +5,8 @@ import { OrbitControls } from '@react-three/drei'
 import './App.css'
 import MarioSprite from './components/MarioSprite'
 import Scene from './components/Scene'
-import MarioExamplePage from './MarioExamplePage'
 import LandingPage from '../LandingPage'
+import GameRunPage from './GameRunPage'
 
 function App() {
   const [marioPosition, setMarioPosition] = useState([-2, 0, 0]);
@@ -29,6 +29,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/PauseBrosHome" element={<LandingPage />} />
+        <Route path="/game" element={<GameRunPage />} />
         <Route path="/" element={
           <div className="retro-container">
             <h1 className="retro-title">Super Pause Bros</h1>
