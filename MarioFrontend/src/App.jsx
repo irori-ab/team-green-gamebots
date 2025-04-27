@@ -1,11 +1,12 @@
-import { useState, Suspense } from 'react'
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import { useState, useEffect, Suspense } from 'react'
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom'
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
 import './App.css'
 import MarioSprite from './components/MarioSprite'
 import Scene from './components/Scene'
 import MarioExamplePage from './MarioExamplePage'
+import LandingPage from '../LandingPage'
 
 function App() {
   const [marioPosition, setMarioPosition] = useState([-2, 0, 0]);
@@ -19,7 +20,7 @@ function App() {
     if (!pipeEntered) {
       setPipeEntered(true);
       setMarioPosition([-2, 0, 0]);
-      window.location.href = '/marioExamplePage';
+      window.location.href = '/PauseBrosHome';
       setPipeEntered(false)
     }
   };
@@ -27,7 +28,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/marioExamplePage" element={<MarioExamplePage />} />
+        <Route path="/PauseBrosHome" element={<LandingPage />} />
         <Route path="/" element={
           <div className="retro-container">
             <h1 className="retro-title">Super Pause Bros</h1>
