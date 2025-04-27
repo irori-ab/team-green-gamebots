@@ -48,7 +48,7 @@ const GameRunPage: React.FC = () => {
       <h1>Game in Action</h1>
       <VideoContainer>
         <video controls>
-          <source src="src/assets/game-run.mov" type="video/mp4" />
+          <source src="/game-run.mov" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
       </VideoContainer>
