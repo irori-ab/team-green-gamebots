@@ -343,8 +343,6 @@ const LandingPage: React.FC = () => {
             }}
           >
             <CTAButton
-              as={Link}
-              to="/game"
               whileHover={{ 
                 scale: 1.2,
                 rotate: [0, -5, 5, -5, 0],
@@ -356,8 +354,10 @@ const LandingPage: React.FC = () => {
                 }
               }}
               whileTap={{ scale: 0.9 }}
+              as={Link}
+              to="/use-cases"
             >
-              Get Started
+              See More
             </CTAButton>
           </motion.div>
         </HeroContent>

@@ -7,6 +7,7 @@ import MarioSprite from './components/MarioSprite'
 import Scene from './components/Scene'
 import LandingPage from '../LandingPage'
 import GameRunPage from './GameRunPage'
+import UseCasePage from '../UseCasePage'
 
 function App() {
   const [marioPosition, setMarioPosition] = useState([-2, 0, 0]);
@@ -37,6 +38,7 @@ function App() {
       <Routes>
         <Route path="/PauseBrosHome" element={<LandingPage />} />
         <Route path="/game" element={<GameRunPage />} />
+        <Route path="/use-cases" element={<UseCasePage />} />
         <Route path="/" element={
           <div className="retro-container">
             <h1 className="retro-title">Super Pause Bros</h1>
