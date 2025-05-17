@@ -1,4 +1,4 @@
-import { useState, useEffect, Suspense } from 'react'
+import { useState, useEffect, Suspense, useRef } from 'react'
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom'
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
@@ -11,6 +11,13 @@ import GameRunPage from './GameRunPage'
 function App() {
   const [marioPosition, setMarioPosition] = useState([-2, 0, 0]);
   const [pipeEntered, setPipeEntered] = useState(false);
+  const canvasContainerRef = useRef();
+
+  useEffect(() => {
+    if (canvasContainerRef.current) {
+      canvasContainerRef.current.focus();
+    }
+  }, []);
 
   const handleMarioPositionChange = (position) => {
     setMarioPosition(position);
@@ -33,7 +40,7 @@ function App() {
         <Route path="/" element={
           <div className="retro-container">
             <h1 className="retro-title">Super Pause Bros</h1>
-            <div className="canvas-container">
+            <div className="canvas-container" ref={canvasContainerRef} tabIndex={0} style={{ outline: 'none' }}>
               <Canvas
                 camera={{ position: [0, 2, 5], fov: 75 }}
                 style={{ background: 'transparent' }}

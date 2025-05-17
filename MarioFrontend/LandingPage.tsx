@@ -343,6 +343,8 @@ const LandingPage: React.FC = () => {
             }}
           >
             <CTAButton
+              as={Link}
+              to="/game"
               whileHover={{ 
                 scale: 1.2,
                 rotate: [0, -5, 5, -5, 0],
