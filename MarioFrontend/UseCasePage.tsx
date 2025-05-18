@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { generateJumpSound, generateCoinSound, generateFlyingSound, generatePowerupSound } from './src/utils/generateMarioSounds';
+import { generateJumpSound } from './src/utils/generateMarioSounds';
 
 const Container = styled.div`
   min-height: 100vh;
@@ -345,27 +345,19 @@ interface TimelineCardProps {
 const UseCasePage: React.FC = () => {
   const [visibleCards, setVisibleCards] = useState<number[]>([0]);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [audioInitialized, setAudioInitialized] = useState(false);
 
   const handleClick = () => {
+    if (!audioInitialized) {
+      setAudioInitialized(true);
+    }
+
     if (visibleCards.length < 4) {
       const nextCardIndex = visibleCards.length;
       setVisibleCards(prev => [...prev, nextCardIndex]);
       
-      // Play different sounds based on which card is being revealed
-      switch (nextCardIndex) {
-        case 0:
-          generateJumpSound(); // First card - jump sound
-          break;
-        case 1:
-          generateCoinSound(); // Second card - coin sound
-          break;
-        case 2:
-          generateFlyingSound(); // Third card - flying sound
-          break;
-        case 3:
-          generatePowerupSound(); // Fourth card - powerup sound
-          break;
-      }
+      // Play jump sound
+      generateJumpSound();
       
       // Scroll to the newly revealed card
       setTimeout(() => {
@@ -376,6 +368,20 @@ const UseCasePage: React.FC = () => {
       }, 100);
     }
   };
+
+  // Initialize audio on first interaction
+  useEffect(() => {
+    const handleFirstInteraction = () => {
+      if (!audioInitialized) {
+        setAudioInitialized(true);
+      }
+    };
+
+    document.addEventListener('click', handleFirstInteraction, { once: true });
+    return () => {
+      document.removeEventListener('click', handleFirstInteraction);
+    };
+  }, [audioInitialized]);
 
   React.useEffect(() => {
     window.scrollTo(0, 0);
